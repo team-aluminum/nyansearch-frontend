@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { Animated, View, Easing, Text } from 'react-native'
-import { Accelerometer } from 'expo-sensors'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import styles from './style'
@@ -15,17 +14,20 @@ export class HomeScreen extends Component {
         circleSize: new Animated.Value(0),
         catpadDeg: new Animated.Value(0),
         logoView: new Animated.Value(0),
-        accelerometerData: { x: 0, y: 0, z: 0 },
+        subscribeTimer: null,
         location: null,
+        heading: { magHeading: null },
     };
 
     componentWillMount() {
+        this._getLocationAsync()
     }
 
     componentDidMount() {
         this._launchAnimation()
-        this._subscribe()
-        this._getLocationAsync()
+        const timer = setInterval(() => {
+            this._subscribe()
+        }, 2000)
 
         setTimeout(() => {
             this.props.navigation.navigate('Home')
@@ -35,27 +37,25 @@ export class HomeScreen extends Component {
         this._unsubscribe();
     }
 
-    async _getLocationAsync() {
-        const { status } = await Permissions.askAsync(Permissions.LOCATION)
-        if (status !== 'granted') {
-            return
-        }
-        const location = await Location.getCurrentPositionAsync({})
-        this.setState({ location })
-        console.log(this.state.location)
+    _getLocationAsync() {
+        Permissions.askAsync(Permissions.LOCATION).then(res => {
+            if (res.status !== 'granted') {
+                return
+            }
+            Location.getCurrentPositionAsync({}).then(location => {
+                this.setState({ location })
+            })
+            Location.getHeadingAsync().then(heading => {
+                this.setState({ heading })
+            })
+        })
     }
 
     _subscribe = () => {
-        this._subscription = Accelerometer.addListener(accelerometerData => {
-            this.setState({ accelerometerData });
-        });
-        Accelerometer.setUpdateInterval(1000);
+        this._getLocationAsync()
     }
     _unsubscribe = () => {
-        if (this._subscription) {
-            this._subscription.remove();
-        }
-        this._subscription = null;
+        clearInterval(this.state.subscribeTimer)
     }
 
     _launchAnimation() {
@@ -103,8 +103,6 @@ export class HomeScreen extends Component {
     }
 
     render() {
-
-        let { x, y, z } = this.state.accelerometerData;
         let {circleSize, logoView, catpadDeg} = this.state;
         let catpadDegValue = catpadDeg.interpolate({
             inputRange: [-1, 0, 1],
@@ -130,9 +128,8 @@ export class HomeScreen extends Component {
                     }} source={require('../../../assets/catpad.png')}/>
                 </View>
                 <View style={{marginTop: 70}}>
-                    <Text>x: {x.toFixed(3)}</Text>
-                    <Text>y: {y.toFixed(3)}</Text>
-                    <Text>z: {z.toFixed(3)}</Text>
+                    <Text>magHeading: {this.state.heading.magHeading}</Text>
+                    <Text>trueHeading: {this.state.heading.trueHeading}</Text>
                 </View>
             </View>
         );
