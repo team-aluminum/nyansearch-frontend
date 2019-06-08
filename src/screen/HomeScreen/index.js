@@ -1,6 +1,8 @@
-import React, {Component} from 'react';
-import {Animated, View, Easing, Text} from 'react-native'
+import React, { Component } from 'react'
+import { Animated, View, Easing, Text } from 'react-native'
 import { Accelerometer } from 'expo-sensors'
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions'
 import styles from './style'
 
 export class HomeScreen extends Component {
@@ -14,11 +16,16 @@ export class HomeScreen extends Component {
         catpadDeg: new Animated.Value(0),
         logoView: new Animated.Value(0),
         accelerometerData: { x: 0, y: 0, z: 0 },
+        location: null,
     };
 
+    componentWillMount() {
+    }
+
     componentDidMount() {
-        this._launchAnimation();
+        this._launchAnimation()
         this._subscribe()
+        this._getLocationAsync()
 
         setTimeout(() => {
             this.props.navigation.navigate('Home')
@@ -26,6 +33,16 @@ export class HomeScreen extends Component {
     }
     componentWillUnmount() {
         this._unsubscribe();
+    }
+
+    async _getLocationAsync() {
+        const { status } = await Permissions.askAsync(Permissions.LOCATION)
+        if (status !== 'granted') {
+            return
+        }
+        const location = await Location.getCurrentPositionAsync({})
+        this.setState({ location })
+        console.log(this.state.location)
     }
 
     _subscribe = () => {
