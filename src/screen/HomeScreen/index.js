@@ -20,6 +20,7 @@ export class HomeScreen extends Component {
         subscribeTimer: null,
         location: null,
         heading: { magHeading: null },
+        playing: false,
     };
 
     componentWillMount() {
@@ -112,6 +113,13 @@ export class HomeScreen extends Component {
 
     }
 
+    _onPlay = () => {
+        console.log("play");
+    }
+    _onPause = () => {
+        console.log("pause");
+    }
+
     render() {
         let {circleSize, logoView, catpadDeg, circleView} = this.state;
         let catpadDegValue = catpadDeg.interpolate({
@@ -159,7 +167,7 @@ export class HomeScreen extends Component {
                 }} source={require('../../../assets/circle.png')}/>
 
                 <View style={styles.playButton}>
-                    <PlayButton/>
+                    <PlayButton onPlay={this._onPlay} onPause={this._onPause} />
                 </View>
             </View>
         );
