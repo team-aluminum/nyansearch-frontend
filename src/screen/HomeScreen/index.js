@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Text} from 'react-native'
 
-
 export class HomeScreen extends Component {
     static navigationOptions = {
         header: null,
@@ -21,7 +20,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#414143',
+        backgroundColor: '#E1DCD9',
     },
 
 });

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, View, Easing} from 'react-native'
 
-
 export class LunchScreen extends Component {
     static navigationOptions = {
         header: null,
@@ -14,6 +13,7 @@ export class LunchScreen extends Component {
     };
 
     componentDidMount() {
+
         Animated.sequence([
             Animated.parallel([
                 Animated.timing(this.state.circleSize, {
@@ -53,8 +53,15 @@ export class LunchScreen extends Component {
                 easing: Easing.out(Easing.ease)
             })
         ]).start();
+
+        setTimeout(() => {
+            this.props.navigation.navigate('Home')
+        }, 1500);
+
     }
+
     render() {
+
         let { circleSize, logoView, catpadDeg } = this.state;
         let catpadDegValue = catpadDeg.interpolate({
             inputRange: [-1, 0, 1],
@@ -81,9 +88,11 @@ export class LunchScreen extends Component {
             </View>
         );
     }
+
 }
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         justifyContent: 'center',
