@@ -18,19 +18,16 @@ export class HomeScreen extends Component {
         logoView: new Animated.Value(0),
         circleView: new Animated.Value(0),
         subscribeTimer: null,
-        location: null,
-        heading: { magHeading: null },
+        location: { lat: null, long: null },
+        heading: null,
     };
-
-    componentWillMount() {
-        this._getLocationAsync()
-    }
 
     componentDidMount() {
         this._launchAnimation()
         const timer = setInterval(() => {
             this._subscribe()
         }, 2000)
+        this.setState(() => { subscribeTimer: timer })
 
         setTimeout(() => {
             this.props.navigation.navigate('Home')
@@ -46,10 +43,10 @@ export class HomeScreen extends Component {
                 return
             }
             Location.getCurrentPositionAsync({}).then(location => {
-                this.setState({ location })
+                this.setState({ location: { lat: location.coords.latitude, long: location.coords.longitude } })
             })
             Location.getHeadingAsync().then(heading => {
-                this.setState({ heading })
+                this.setState({ heading: heading.magHeading })
             })
         })
     }
@@ -109,7 +106,6 @@ export class HomeScreen extends Component {
                 })
             ])
         ]).start();
-
     }
 
     render() {
@@ -139,9 +135,10 @@ export class HomeScreen extends Component {
                     }} source={require('../../../assets/catpad.png')}/>
                 </View>
 
-                <View style={{marginTop: 70}}>
-                    <Text>magHeading: {this.state.heading.magHeading}</Text>
-                    <Text>trueHeading: {this.state.heading.trueHeading}</Text>
+                <View style={{marginTop: 100}}>
+                    <Text>緯度: {this.state.location.lat}</Text>
+                    <Text>経度: {this.state.location.long}</Text>
+                    <Text>方角: {this.state.heading}</Text>
                 </View>
 
                 <Animated.View style={{
@@ -172,6 +169,5 @@ const cats = [
     {id: 1, deg: 0, size: 2}, // left
     {id: 2, deg: 90, size: 1}, // top
     {id: 3, deg: 180, size: 1}, // right
-    {id: 4, deg: 270, size: 3}, // bottom
     {id: 5, deg: 320, size: 1}, // custom
 ];
