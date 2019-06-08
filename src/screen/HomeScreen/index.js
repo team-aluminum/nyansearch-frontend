@@ -1,5 +1,7 @@
-import React, {Component} from 'react';
-import {Animated, View, Easing, Dimensions} from 'react-native'
+import React, { Component } from 'react'
+import { Animated, View, Easing, Dimensions, Text } from 'react-native'
+import * as Location from 'expo-location'
+import * as Permissions from 'expo-permissions'
 import styles from './style'
 import PlayButton from '../../component/PlayButton'
 import CatView from '../../component/CatView'
@@ -15,10 +17,48 @@ export class HomeScreen extends Component {
         catpadDeg: new Animated.Value(0),
         logoView: new Animated.Value(0),
         circleView: new Animated.Value(0),
+        subscribeTimer: null,
+        location: null,
+        heading: { magHeading: null },
     };
 
+    componentWillMount() {
+        this._getLocationAsync()
+    }
+
     componentDidMount() {
-        this._launchAnimation();
+        this._launchAnimation()
+        const timer = setInterval(() => {
+            this._subscribe()
+        }, 2000)
+
+        setTimeout(() => {
+            this.props.navigation.navigate('Home')
+        }, 1500);
+    }
+    componentWillUnmount() {
+        this._unsubscribe();
+    }
+
+    _getLocationAsync() {
+        Permissions.askAsync(Permissions.LOCATION).then(res => {
+            if (res.status !== 'granted') {
+                return
+            }
+            Location.getCurrentPositionAsync({}).then(location => {
+                this.setState({ location })
+            })
+            Location.getHeadingAsync().then(heading => {
+                this.setState({ heading })
+            })
+        })
+    }
+
+    _subscribe = () => {
+        this._getLocationAsync()
+    }
+    _unsubscribe = () => {
+        clearInterval(this.state.subscribeTimer)
     }
 
     _launchAnimation() {
@@ -73,7 +113,6 @@ export class HomeScreen extends Component {
     }
 
     render() {
-
         let {circleSize, logoView, catpadDeg, circleView} = this.state;
         let catpadDegValue = catpadDeg.interpolate({
             inputRange: [-1, 0, 1],
@@ -100,6 +139,11 @@ export class HomeScreen extends Component {
                     }} source={require('../../../assets/catpad.png')}/>
                 </View>
 
+                <View style={{marginTop: 70}}>
+                    <Text>magHeading: {this.state.heading.magHeading}</Text>
+                    <Text>trueHeading: {this.state.heading.trueHeading}</Text>
+                </View>
+
                 <Animated.View style={{
                     opacity: circleView,
                     ...styles.catView
@@ -117,7 +161,6 @@ export class HomeScreen extends Component {
                 <View style={styles.playButton}>
                     <PlayButton/>
                 </View>
-
             </View>
         );
     }
