@@ -21,6 +21,6 @@ export default StyleSheet.create({
     playButton: {
         position: 'absolute',
         bottom: 96,
-    }
+    },
 
 });

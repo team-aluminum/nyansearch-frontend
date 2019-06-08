@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Animated, View, Easing} from 'react-native'
 import styles from './style'
 import PlayButton from '../../component/PlayButton'
+import CatView from '../../component/CatView'
 
 export class HomeScreen extends Component {
 
@@ -17,11 +18,6 @@ export class HomeScreen extends Component {
 
     componentDidMount() {
         this._launchAnimation();
-
-        setTimeout(() => {
-            this.props.navigation.navigate('Home')
-        }, 1500);
-
     }
 
     _launchAnimation() {
@@ -88,6 +84,9 @@ export class HomeScreen extends Component {
                     borderRadius: circleSize,
                     ...styles.circle
                 }}/>
+
+                <CatView cats={cats}/>
+
                 <View style={styles.catpad}>
                     <Animated.Image style={{
                         transform: [{rotate: catpadDegValue}],
@@ -98,8 +97,18 @@ export class HomeScreen extends Component {
                 <View style={styles.playButton}>
                     <PlayButton />
                 </View>
+
             </View>
         );
     }
 
 }
+
+// run Example
+const cats = [
+    {id: 1, deg: 0, size: 2}, // left
+    {id: 2, deg: 90, size: 1}, // top
+    {id: 3, deg: 180, size: 1}, // right
+    {id: 4, deg: 270, size: 3}, // bottom
+    {id: 5, deg: 320, size: 1}, // custom
+];
