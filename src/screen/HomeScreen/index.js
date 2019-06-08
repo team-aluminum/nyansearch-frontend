@@ -1,7 +1,10 @@
-import React, { Component } from 'react';
-import { Animated, StyleSheet, View, Easing} from 'react-native'
+import React, {Component} from 'react';
+import {Animated, View, Easing} from 'react-native'
+import styles from './style'
+import transitions from './transition'
 
 export class HomeScreen extends Component {
+
     static navigationOptions = {
         header: null,
     };
@@ -9,10 +12,19 @@ export class HomeScreen extends Component {
     state = {
         circleSize: new Animated.Value(0),
         catpadDeg: new Animated.Value(0),
-        logoView:  new Animated.Value(0),
+        logoView: new Animated.Value(0),
     };
 
     componentDidMount() {
+        this._launchAnimation();
+
+        setTimeout(() => {
+            this.props.navigation.navigate('Home')
+        }, 1500);
+
+    }
+
+    _launchAnimation() {
 
         Animated.sequence([
             Animated.parallel([
@@ -54,15 +66,11 @@ export class HomeScreen extends Component {
             })
         ]).start();
 
-        setTimeout(() => {
-            this.props.navigation.navigate('Home')
-        }, 1500);
-
     }
 
     render() {
 
-        let { circleSize, logoView, catpadDeg } = this.state;
+        let {circleSize, logoView, catpadDeg} = this.state;
         let catpadDegValue = catpadDeg.interpolate({
             inputRange: [-1, 0, 1],
             outputRange: ['-15deg', '0deg', '15deg']
@@ -79,32 +87,15 @@ export class HomeScreen extends Component {
                     height: circleSize,
                     borderRadius: circleSize,
                     ...styles.circle
-                }} />
-                <Animated.Image style={{
-                    transform: [{rotate: catpadDegValue}],
-                    marginBottom: logoMargin,
-                    ...styles.catpad
-                }} source={require('../../../assets/catpad.png')} />
+                }}/>
+                <View style={styles.catpad}>
+                    <Animated.Image style={{
+                        transform: [{rotate: catpadDegValue}],
+                        marginBottom: logoMargin,
+                    }} source={require('../../../assets/catpad.png')}/>
+                </View>
             </View>
         );
     }
 
 }
-
-const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#414143',
-    },
-    circle: {
-        backgroundColor: '#E1DCD9',
-        position: 'absolute',
-    },
-    catpad: {
-
-    }
-
-});
