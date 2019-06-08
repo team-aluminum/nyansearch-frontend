@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Animated, View, Easing} from 'react-native'
 import styles from './style'
+import PlayButton from '../../component/PlayButton'
 
 export class HomeScreen extends Component {
 
@@ -92,6 +93,10 @@ export class HomeScreen extends Component {
                         transform: [{rotate: catpadDegValue}],
                         marginBottom: logoMargin,
                     }} source={require('../../../assets/catpad.png')}/>
+                </View>
+
+                <View style={styles.playButton}>
+                    <PlayButton />
                 </View>
             </View>
         );

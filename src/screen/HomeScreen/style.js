@@ -17,6 +17,10 @@ export default StyleSheet.create({
     catpad: {
         position: 'absolute',
         zIndex: 10,
+    },
+    playButton: {
+        position: 'absolute',
+        bottom: 96,
     }
 
 });
