@@ -28,15 +28,7 @@ export default class CatView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        position: 'absolute',
-        top: Dimensions.get('window').height / 2 - 160 - 50,
-        left: Dimensions.get('window').width / 2 - 160,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 320,
-        height: 320,
-        zIndex: 1,
+
     },
     itemWrap: {
         position:  'absolute',

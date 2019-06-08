@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Animated, View, Easing} from 'react-native'
+import {Animated, View, Easing, Dimensions} from 'react-native'
 import styles from './style'
 import PlayButton from '../../component/PlayButton'
 import CatView from '../../component/CatView'
@@ -14,6 +14,7 @@ export class HomeScreen extends Component {
         circleSize: new Animated.Value(0),
         catpadDeg: new Animated.Value(0),
         logoView: new Animated.Value(0),
+        circleView: new Animated.Value(0),
     };
 
     componentDidMount() {
@@ -59,14 +60,21 @@ export class HomeScreen extends Component {
                 toValue: 0,
                 duration: 50,
                 easing: Easing.out(Easing.ease)
-            })
+            }),
+            Animated.parallel([
+                Animated.timing(this.state.circleView, {
+                    toValue: 1,
+                    duration: 1000,
+                    easing: Easing.out(Easing.ease)
+                })
+            ])
         ]).start();
 
     }
 
     render() {
 
-        let {circleSize, logoView, catpadDeg} = this.state;
+        let {circleSize, logoView, catpadDeg, circleView} = this.state;
         let catpadDegValue = catpadDeg.interpolate({
             inputRange: [-1, 0, 1],
             outputRange: ['-15deg', '0deg', '15deg']
@@ -82,10 +90,8 @@ export class HomeScreen extends Component {
                     width: circleSize,
                     height: circleSize,
                     borderRadius: circleSize,
-                    ...styles.circle
+                    ...styles.circleZoom
                 }}/>
-
-                <CatView cats={cats}/>
 
                 <View style={styles.catpad}>
                     <Animated.Image style={{
@@ -94,8 +100,22 @@ export class HomeScreen extends Component {
                     }} source={require('../../../assets/catpad.png')}/>
                 </View>
 
+                <Animated.View style={{
+                    opacity: circleView,
+                    ...styles.catView
+                }}>
+                    <CatView cats={cats}/>
+                </Animated.View>
+
+                <Animated.Image style={{
+                    transform: [{rotate: catpadDegValue}],
+                    top: Dimensions.get('window').height / 2 - 140,
+                    opacity: circleView,
+                    ...styles.circle
+                }} source={require('../../../assets/circle.png')}/>
+
                 <View style={styles.playButton}>
-                    <PlayButton />
+                    <PlayButton/>
                 </View>
 
             </View>
