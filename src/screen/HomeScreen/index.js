@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Animated, View, Easing} from 'react-native'
+import {Animated, View, Easing, Text} from 'react-native'
 import styles from './style'
+import { Accelerometer } from 'expo-sensors'
 
 export class HomeScreen extends Component {
 
@@ -12,15 +13,32 @@ export class HomeScreen extends Component {
         circleSize: new Animated.Value(0),
         catpadDeg: new Animated.Value(0),
         logoView: new Animated.Value(0),
+        accelerometerData: { x: 0, y: 0, z: 0 },
     };
 
     componentDidMount() {
         this._launchAnimation();
+        this._subscribe()
 
         setTimeout(() => {
             this.props.navigation.navigate('Home')
         }, 1500);
+    }
+    componentWillUnmount() {
+        this._unsubscribe();
+    }
 
+    _subscribe = () => {
+        this._subscription = Accelerometer.addListener(accelerometerData => {
+            this.setState({ accelerometerData });
+        });
+        Accelerometer.setUpdateInterval(1000);
+    }
+    _unsubscribe = () => {
+        if (this._subscription) {
+            this._subscription.remove();
+        }
+        this._subscription = null;
     }
 
     _launchAnimation() {
@@ -69,6 +87,7 @@ export class HomeScreen extends Component {
 
     render() {
 
+        let { x, y, z } = this.state.accelerometerData;
         let {circleSize, logoView, catpadDeg} = this.state;
         let catpadDegValue = catpadDeg.interpolate({
             inputRange: [-1, 0, 1],
@@ -92,6 +111,11 @@ export class HomeScreen extends Component {
                         transform: [{rotate: catpadDegValue}],
                         marginBottom: logoMargin,
                     }} source={require('../../../assets/catpad.png')}/>
+                </View>
+                <View style={{marginTop: 70}}>
+                    <Text>x: {x.toFixed(3)}</Text>
+                    <Text>y: {y.toFixed(3)}</Text>
+                    <Text>z: {z.toFixed(3)}</Text>
                 </View>
             </View>
         );
