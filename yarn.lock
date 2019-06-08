@@ -4567,11 +4567,6 @@ react-native-tab-view@^1.2.0, react-native-tab-view@^1.4.1:
   dependencies:
     prop-types "^15.6.1"
 
-react-native-track-player@^1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/react-native-track-player/-/react-native-track-player-1.1.4.tgz#b8d2b76c57e382d02aa23f9bd70f5b8c1ea42c30"
-  integrity sha512-6+fK+DeFPX+1v+GL+BFnvqC6pDElAps9cgDgVaMRVy/vgJIezWWWQltALBWpstQetUlR0kp27/CZWu6iJUNi9Q==
-
 react-native-view-shot@2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/react-native-view-shot/-/react-native-view-shot-2.6.0.tgz#3b23675826f67658366352c4b97b59a6aded2f43"

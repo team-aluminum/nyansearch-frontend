@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Animated, View, Easing, Text} from 'react-native'
-import styles from './style'
 import { Accelerometer } from 'expo-sensors'
+import styles from './style'
 
 export class HomeScreen extends Component {
 
