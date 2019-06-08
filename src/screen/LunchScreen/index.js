@@ -10,15 +10,23 @@ export class LunchScreen extends Component {
     state = {
         circleSize: new Animated.Value(0),
         catpadDeg: new Animated.Value(0),
+        logoView:  new Animated.Value(0),
     };
 
     componentDidMount() {
         Animated.sequence([
-            Animated.timing(this.state.circleSize, {
-                toValue: 994,
-                duration: 500,
-                easing: Easing.out(Easing.ease)
-            }),
+            Animated.parallel([
+                Animated.timing(this.state.circleSize, {
+                    toValue: 994,
+                    duration: 500,
+                    easing: Easing.out(Easing.ease)
+                }),
+                Animated.timing(this.state.logoView, {
+                    toValue: 1,
+                    duration: 500,
+                    easing: Easing.out(Easing.ease)
+                }),
+            ]),
             Animated.timing(this.state.catpadDeg, {
                 toValue: 1,
                 duration: 100,
@@ -47,11 +55,16 @@ export class LunchScreen extends Component {
         ]).start();
     }
     render() {
-        let { circleSize, catpadDeg } = this.state;
+        let { circleSize, logoView, catpadDeg } = this.state;
         let catpadDegValue = catpadDeg.interpolate({
             inputRange: [-1, 0, 1],
             outputRange: ['-15deg', '0deg', '15deg']
         });
+        let logoMargin = logoView.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 100]
+        });
+
         return (
             <View style={styles.container}>
                 <Animated.View style={{
@@ -62,6 +75,7 @@ export class LunchScreen extends Component {
                 }} />
                 <Animated.Image style={{
                     transform: [{rotate: catpadDegValue}],
+                    marginBottom: logoMargin,
                     ...styles.catpad
                 }} source={require('../../../assets/catpad.png')} />
             </View>
