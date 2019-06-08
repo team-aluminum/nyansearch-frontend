@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {Animated, View, Easing} from 'react-native'
 import styles from './style'
-import transitions from './transition'
 
 export class HomeScreen extends Component {
 
