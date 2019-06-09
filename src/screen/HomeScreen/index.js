@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Animated, View, Easing, Dimensions, Text} from 'react-native'
+import {Animated, View, Easing, Dimensions, Text, Image} from 'react-native'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import * as Animatable from 'react-native-animatable';
@@ -19,6 +19,7 @@ export class HomeScreen extends Component {
         circleSize: new Animated.Value(0),
         catpadDeg: new Animated.Value(0),
         logoView: new Animated.Value(0),
+        textLogoView: new Animated.Value(1),
         circleView: new Animated.Value(0),
         subscribeTimer: null,
         location: { lat: null, long: null },
@@ -141,10 +142,16 @@ export class HomeScreen extends Component {
                 duration: 50,
                 easing: Easing.out(Easing.ease)
             }),
+            Animated.timing(this.state.textLogoView, {
+                toValue: 0,
+                duration: 500,
+                easing: Easing.out(Easing.ease)
+            }),
             Animated.parallel([
                 Animated.timing(this.state.circleView, {
                     toValue: 1,
                     duration: 1000,
+                    delay: 150,
                     easing: Easing.out(Easing.ease)
                 })
             ])
@@ -189,7 +196,7 @@ export class HomeScreen extends Component {
     }
 
     render() {
-        let {circleSize, logoView, catpadDeg, circleView} = this.state;
+        let {circleSize, logoView, catpadDeg, circleView, textLogoView} = this.state;
         let catpadDegValue = catpadDeg.interpolate({
             inputRange: [-1, 0, 1],
             outputRange: ['-15deg', '0deg', '15deg']
@@ -208,13 +215,13 @@ export class HomeScreen extends Component {
                     ...styles.circleZoom
                 }}/>
 
-                <Animatable.View animation='fadeInUp' delay={200} style={{
-                    opacity: circleView,
-                    ...styles.headerLabel
-                }}>
-                    <Text>猫の声をたどりに </Text>
-                    <Text>かんばんねこを探そう！</Text>
-                </Animatable.View>
+                <Animatable.Image
+                    animation='fadeInUp' delay={1550}  style={{
+                        opacity: circleView,
+                        ...styles.headerLabel
+                    }}
+                    source={require('../../../assets/header-label.png')}
+                />
 
                 <View style={styles.catpad}>
                     <Animated.Image style={{
@@ -228,6 +235,10 @@ export class HomeScreen extends Component {
                     <Text>経度: {this.state.location.long}</Text>
                     <Text>方角: {this.state.heading}</Text>
                 </View>
+
+                <Animated.View style={{opacity: textLogoView, ...styles.logoContainer}}>
+                    <Image source={require('../../../assets/logo.png')} style={{...styles.logoImage}} />
+                </Animated.View>
 
                 <Animated.View style={{
                     opacity: circleView,
@@ -252,7 +263,7 @@ export class HomeScreen extends Component {
                     <Text>近くにかんばんねこがいます</Text>
                 </Animated.View>
 
-                <Animatable.View animation='slideInUp' delay={500} style={styles.playButton}>
+                <Animatable.View animation='slideInUp' delay={1550} duration={1000} style={styles.playButton}>
                     <PlayButton onPlay={this._onPlay} onPause={this._onPause}/>
                 </Animatable.View>
             </View>

@@ -21,6 +21,11 @@ export default StyleSheet.create({
         position: 'absolute',
         zIndex: 10,
     },
+    logoContainer: {},
+    logoImage: {
+        width: 120,
+        height: 56,
+    },
     catView: {
         position: 'absolute',
         flex: 1,
@@ -35,7 +40,6 @@ export default StyleSheet.create({
     headerLabel: {
         position: 'absolute',
         top: 120,
-        fontSize: 25,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
