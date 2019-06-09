@@ -2,10 +2,11 @@ import React, { Component } from 'react'
 import { Animated, View, Easing, Dimensions, Text } from 'react-native'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
-import { Audio } from 'expo'
+import { Audio } from 'expo-av'
 import styles from './style'
 import PlayButton from '../../component/PlayButton'
 import CatView from '../../component/CatView'
+import ApiClient from '../../utils/ApiClient'
 
 export class HomeScreen extends Component {
 
@@ -21,6 +22,7 @@ export class HomeScreen extends Component {
         subscribeTimer: null,
         location: { lat: null, long: null },
         heading: null,
+        cats: [],
     };
 
     componentDidMount() {
@@ -61,6 +63,12 @@ export class HomeScreen extends Component {
 
     _subscribe = () => {
         this._getLocationAsync()
+        if (this.state.heading && this.state.location.lat && this.state.long) {
+            console.log(123)
+            ApiClient('get', `/sound/${this.state.heading}/${this.state.location.long}/${this.state.location.lat}`).then(response => {
+                console.log(response.data)
+            })
+        }
     }
     _unsubscribe = () => {
         clearInterval(this.state.subscribeTimer)
@@ -153,7 +161,7 @@ export class HomeScreen extends Component {
                     opacity: circleView,
                     ...styles.catView
                 }}>
-                    <CatView cats={cats}/>
+                    <CatView cats={this.state.cats}/>
                 </Animated.View>
 
                 <Animated.Image style={{
@@ -173,9 +181,9 @@ export class HomeScreen extends Component {
 }
 
 // run Example
-const cats = [
-    {id: 1, deg: 0, size: 2}, // left
-    {id: 2, deg: 90, size: 1}, // top
-    {id: 3, deg: 180, size: 1}, // right
-    {id: 5, deg: 320, size: 1}, // custom
-];
+// const cats = [
+//     {id: 1, deg: 0, size: 2}, // left
+//     {id: 2, deg: 90, size: 1}, // top
+//     {id: 3, deg: 180, size: 1}, // right
+//     {id: 5, deg: 320, size: 1}, // custom
+// ];
