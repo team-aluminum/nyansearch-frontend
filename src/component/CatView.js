@@ -15,7 +15,7 @@ export default class CatView extends Component {
                         ...styles.itemWrap
                     }}>
                         <Animated.Image style={{
-                            width: catSizies[cats.size - 1],
+                            width: catSizies[cats.size - 1] * 1.2,
                             height: catSizies[cats.size - 1],
                             ...styles.item
                         }} source={require('../../assets/catpad3x.png')} />
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
         position:  'absolute',
         textAlign: 'left',
         width: 320,
-        height: 48,
+        height: 56,
     },
     item: {
         position:  'absolute',
