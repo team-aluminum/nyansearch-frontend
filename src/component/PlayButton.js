@@ -37,7 +37,7 @@ export default class PlayButton extends Component {
                 return;
             }
 
-            if (this.state.talkIcon < 15) {
+            if (this.state.talkIcon < 20) {
                 this.setState({talkIcon: this.state.talkIcon + 1});
                 this._iconAnimation();
 
