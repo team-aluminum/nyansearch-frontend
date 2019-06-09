@@ -72,7 +72,7 @@ export class HomeScreen extends Component {
                 this.setState({ location: { lat: location.coords.latitude, long: location.coords.longitude } })
             })
             Location.getHeadingAsync().then(heading => {
-                this.setState({ heading: heading.magHeading })
+                this.setState({ heading: heading.trueHeading })
             })
         })
     }
