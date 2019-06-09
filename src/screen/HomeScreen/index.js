@@ -1,7 +1,8 @@
-import React, { Component } from 'react'
-import { Animated, View, Easing, Dimensions, Text } from 'react-native'
+import React, {Component} from 'react'
+import {Animated, View, Easing, Dimensions, Text} from 'react-native'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
+import * as Animatable from 'react-native-animatable';
 import styles from './style'
 import PlayButton from '../../component/PlayButton'
 import CatView from '../../component/CatView'
@@ -20,6 +21,7 @@ export class HomeScreen extends Component {
         subscribeTimer: null,
         location: { lat: null, long: null },
         heading: null,
+        playing: false,
     };
 
     componentDidMount() {
@@ -33,6 +35,7 @@ export class HomeScreen extends Component {
             this.props.navigation.navigate('Home')
         }, 1500);
     }
+
     componentWillUnmount() {
         this._unsubscribe();
     }
@@ -108,6 +111,43 @@ export class HomeScreen extends Component {
         ]).start();
     }
 
+    _playingAnimation() {
+        this.state.catpadDeg.setValue(0);
+
+        Animated.sequence([
+            Animated.timing(this.state.catpadDeg, {
+                toValue: 1,
+                duration: 100,
+                easing: Easing.out(Easing.ease)
+            }),
+            Animated.timing(this.state.catpadDeg, {
+                toValue: -1,
+                duration: 200,
+                easing: Easing.out(Easing.ease)
+            }),
+            Animated.timing(this.state.catpadDeg, {
+                toValue: 0,
+                duration: 100,
+                easing: Easing.out(Easing.ease)
+            }),
+        ]).start(() => {
+            if (this.state.playing) {
+                this._playingAnimation()
+            }
+        });
+    }
+
+
+    _onPlay = () => {
+        console.log("play");
+        this.setState({playing: true});
+        this._playingAnimation()
+    }
+    _onPause = () => {
+        console.log("pause");
+        this.setState({playing: false});
+    }
+
     render() {
         let {circleSize, logoView, catpadDeg, circleView} = this.state;
         let catpadDegValue = catpadDeg.interpolate({
@@ -127,6 +167,14 @@ export class HomeScreen extends Component {
                     borderRadius: circleSize,
                     ...styles.circleZoom
                 }}/>
+
+                <Animatable.View animation='fadeInUp' delay={200} style={{
+                    opacity: circleView,
+                    ...styles.headerLabel
+                }}>
+                    <Text>猫の声をたどりに </Text>
+                    <Text>かんばんねこを探そう！</Text>
+                </Animatable.View>
 
                 <View style={styles.catpad}>
                     <Animated.Image style={{
@@ -155,9 +203,18 @@ export class HomeScreen extends Component {
                     ...styles.circle
                 }} source={require('../../../assets/circle.png')}/>
 
-                <View style={styles.playButton}>
-                    <PlayButton/>
-                </View>
+                <Animated.View style={{
+                    opacity: circleView,
+                    display: this.state.playing ? 'flex' : 'none',
+                    ...styles.searchingLabel
+                }}>
+                    <Text>大きい肉球は</Text>
+                    <Text>近くにかんばんねこがいます</Text>
+                </Animated.View>
+
+                <Animatable.View animation='slideInUp' delay={500} style={styles.playButton}>
+                    <PlayButton onPlay={this._onPlay} onPause={this._onPause}/>
+                </Animatable.View>
             </View>
         );
     }
@@ -165,9 +222,9 @@ export class HomeScreen extends Component {
 }
 
 // run Example
-const cats = [
-    {id: 1, deg: 0, size: 2}, // left
-    {id: 2, deg: 90, size: 1}, // top
-    {id: 3, deg: 180, size: 1}, // right
-    {id: 5, deg: 320, size: 1}, // custom
-];
+// const cats = [
+//     {id: 1, deg: 0, size: 2}, // left
+//     {id: 2, deg: 90, size: 1}, // top
+//     {id: 3, deg: 180, size: 1}, // right
+//     {id: 5, deg: 320, size: 1}, // custom
+// ];

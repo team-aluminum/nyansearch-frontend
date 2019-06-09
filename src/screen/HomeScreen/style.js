@@ -32,6 +32,22 @@ export default StyleSheet.create({
         left: Dimensions.get('window').width / 2 - 320,
         zIndex: 1,
     },
+    headerLabel: {
+        position: 'absolute',
+        top: 120,
+        fontSize: 25,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    searchingLabel: {
+        position: 'absolute',
+        bottom: 114,
+        fontSize: 25,
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     circle: {
         flex: 1,
         position: 'absolute',
@@ -39,7 +55,7 @@ export default StyleSheet.create({
     },
     playButton: {
         position: 'absolute',
-        bottom: 96,
+        bottom: 20,
     },
 
 });
