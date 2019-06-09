@@ -30,7 +30,6 @@ export class HomeScreen extends Component {
         cats: [],
         newCats: [],
         soundUrl: null,
-        soundObject: null,
     };
 
     componentDidMount() {
@@ -58,15 +57,9 @@ export class HomeScreen extends Component {
         if (!this.state.soundUrl) {
             return
         }
-        if (!this.state.soundObject) {
-            this.setState({
-                soundObject: new Audio.Sound()
-            })
-        }
-        this.state.soundObject.loadAsync({uri: this.state.soundUrl}).then(() => {
-            this.state.soundObject.playAsync().then(() => {
-                this.state.soundObject.unloadAsync()
-            })
+        const soundObject = new Audio.Sound()
+        soundObject.loadAsync({uri: this.state.soundUrl}).then(() => {
+            soundObject.playAsync()
         })
     }
     _getLocationAsync() {
