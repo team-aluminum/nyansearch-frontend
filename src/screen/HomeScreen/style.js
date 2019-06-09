@@ -35,7 +35,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         width: 320,
         height: 320,
-        top: Dimensions.get('window').height / 2 - 160,
+        top: Dimensions.get('window').height / 2 - 236,
         left: Dimensions.get('window').width / 2 - 320,
         zIndex: 1,
     },
