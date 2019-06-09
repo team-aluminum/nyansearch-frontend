@@ -23,6 +23,8 @@ export class HomeScreen extends Component {
         location: { lat: null, long: null },
         heading: null,
         cats: [],
+        soundUrl: null,
+        soundObject: null,
     };
 
     componentDidMount() {
@@ -34,17 +36,27 @@ export class HomeScreen extends Component {
 
         setTimeout(() => {
             this.props.navigation.navigate('Home')
-            this._prepareSound()
         }, 1500);
+
+        setInterval(() => {
+            this._playSound()
+        }, 5000)
     }
     componentWillUnmount() {
         this._unsubscribe();
     }
 
-    _prepareSound() {
-        const soundObject = new Audio.Sound()
-        soundObject.loadAsync({uri: 'http://aluminium-cats.s3-ap-northeast-1.amazonaws.com/cat2_1_f.mp3'}).then(() => {
-            soundObject.playAsync()
+    _playSound() {
+        if (!this.state.soundUrl) {
+            return
+        }
+        if (!this.state.soundObject) {
+            this.setState({
+                soundObject: new Audio.Sound()
+            })
+        }
+        this.state.soundObject.loadAsync({uri: url}).then(() => {
+            this.state.soundObject.playAsync()
         })
     }
     _getLocationAsync() {
@@ -65,7 +77,10 @@ export class HomeScreen extends Component {
         this._getLocationAsync()
         if (this.state.heading && this.state.location.lat && this.state.location.long) {
             ApiClient('get', `/sound?direction=${this.state.heading}&longitude=${this.state.location.long}&latitude=${this.state.location.lat}`).then(response => {
-                console.log(response.data)
+                this.setState({
+                    soundUrl: response.data.sound_url,
+                    cats: response.data.cats,
+                })
             })
         }
     }
