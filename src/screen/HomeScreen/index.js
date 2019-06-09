@@ -171,6 +171,14 @@ export class HomeScreen extends Component {
                     ...styles.circleZoom
                 }}/>
 
+                <Animated.View style={{
+                    opacity: circleView,
+                    ...styles.headerLabel
+                }}>
+                    <Text>猫の声をたどりに </Text>
+                    <Text>かんばんねこを探そう！</Text>
+                </Animated.View>
+
                 <View style={styles.catpad}>
                     <Animated.Image style={{
                         transform: [{rotate: catpadDegValue}],
@@ -196,6 +204,15 @@ export class HomeScreen extends Component {
                     opacity: circleView,
                     ...styles.circle
                 }} source={require('../../../assets/circle.png')}/>
+
+                <Animated.View style={{
+                    opacity: circleView,
+                    display: this.state.playing ? 'flex' : 'none',
+                    ...styles.searchingLabel
+                }}>
+                    <Text>大きい肉球は</Text>
+                    <Text>近くにかんばんねこがいます</Text>
+                </Animated.View>
 
                 <View style={styles.playButton}>
                     <PlayButton onPlay={this._onPlay} onPause={this._onPause}/>
