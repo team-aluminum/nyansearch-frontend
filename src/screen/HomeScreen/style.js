@@ -21,6 +21,11 @@ export default StyleSheet.create({
         position: 'absolute',
         zIndex: 10,
     },
+    logoContainer: {},
+    logoImage: {
+        width: 120,
+        height: 56,
+    },
     catView: {
         position: 'absolute',
         flex: 1,
