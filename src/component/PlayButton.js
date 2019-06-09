@@ -57,35 +57,35 @@ export default class PlayButton extends Component {
                 <Image source={require('../../assets/icon-wail-cat.png')} />
                 <View style={styles.button}>
                     <Image source={require('../../assets/icon-talk0.png')} style={{
-                        display: this.state.talkIcon === 0 || this.state.talkIcon > 7 ? 'flex' : 'none',
+                        opacity: this.state.talkIcon === 0 || this.state.talkIcon > 7 ? 1 : 0,
                         ...styles.icon
                     }} />
                     <Image source={require('../../assets/icon-talk1.png')} style={{
-                        display: this.state.talkIcon === 1 ? 'flex' : 'none',
+                        opacity: this.state.talkIcon === 1 ? 1 : 0,
                         ...styles.icon
                     }} />
                     <Image source={require('../../assets/icon-talk2.png')} style={{
-                        display: this.state.talkIcon === 2 ? 'flex' : 'none',
+                        opacity: this.state.talkIcon === 2 ? 1 : 0,
                         ...styles.icon
                     }} />
                     <Image source={require('../../assets/icon-talk3.png')} style={{
-                        display: this.state.talkIcon === 3 ? 'flex' : 'none',
+                        opacity: this.state.talkIcon === 3 ? 1 : 0,
                         ...styles.icon
                     }} />
                     <Image source={require('../../assets/icon-talk4.png')} style={{
-                        display: this.state.talkIcon === 4 ? 'flex' : 'none',
+                        opacity: this.state.talkIcon === 4 ? 1 : 0,
                         ...styles.icon
                     }} />
                     <Image source={require('../../assets/icon-talk5.png')} style={{
-                        display: this.state.talkIcon === 5 ? 'flex' : 'none',
+                        opacity: this.state.talkIcon === 5 ? 1 : 0,
                         ...styles.icon
                     }} />
                     <Image source={require('../../assets/icon-talk6.png')} style={{
-                        display: this.state.talkIcon === 6 ? 'flex' : 'none',
+                        opacity: this.state.talkIcon === 6 ? 1 : 0,
                         ...styles.icon
                     }} />
                     <Image source={require('../../assets/icon-talk7.png')} style={{
-                        display: this.state.talkIcon === 7 ? 'flex' : 'none',
+                        opacity: this.state.talkIcon === 7 ? 1 : 0,
                         ...styles.icon
                     }} />
                 </View>
@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
     },
     icon: {
+        position: 'absolute',
         width: 32,
         height: 28,
     }

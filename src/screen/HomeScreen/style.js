@@ -33,7 +33,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         width: 320,
         height: 320,
-        top: Dimensions.get('window').height / 2 - 160 - 80,
+        // top: Dimensions.get('window').height / 2 - 160 - 80,
         left: Dimensions.get('window').width / 2 - 320,
         zIndex: 1,
     },
@@ -44,13 +44,15 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    searchingLabel: {
+    searchingLabelContainer: {
         position: 'absolute',
         bottom: 114,
-        fontSize: 25,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    searchingLabel: {
+        fontSize: 22,
     },
     circle: {
         flex: 1,
