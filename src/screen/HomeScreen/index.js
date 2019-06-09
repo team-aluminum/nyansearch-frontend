@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { Animated, View, Easing, Dimensions, Text } from 'react-native'
+import React, {Component} from 'react'
+import {Animated, View, Easing, Dimensions, Text} from 'react-native'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import styles from './style'
@@ -19,7 +19,7 @@ export class HomeScreen extends Component {
         circleView: new Animated.Value(0),
         subscribeTimer: null,
         location: null,
-        heading: { magHeading: null },
+        heading: {magHeading: null},
         playing: false,
     };
 
@@ -37,6 +37,7 @@ export class HomeScreen extends Component {
             this.props.navigation.navigate('Home')
         }, 1500);
     }
+
     componentWillUnmount() {
         this._unsubscribe();
     }
@@ -47,10 +48,10 @@ export class HomeScreen extends Component {
                 return
             }
             Location.getCurrentPositionAsync({}).then(location => {
-                this.setState({ location })
+                this.setState({location})
             })
             Location.getHeadingAsync().then(heading => {
-                this.setState({ heading })
+                this.setState({heading})
             })
         })
     }
@@ -113,11 +114,41 @@ export class HomeScreen extends Component {
 
     }
 
+    _playingAnimation() {
+        this.state.catpadDeg.setValue(0);
+
+        Animated.sequence([
+            Animated.timing(this.state.catpadDeg, {
+                toValue: 1,
+                duration: 100,
+                easing: Easing.out(Easing.ease)
+            }),
+            Animated.timing(this.state.catpadDeg, {
+                toValue: -1,
+                duration: 200,
+                easing: Easing.out(Easing.ease)
+            }),
+            Animated.timing(this.state.catpadDeg, {
+                toValue: 0,
+                duration: 100,
+                easing: Easing.out(Easing.ease)
+            }),
+        ]).start(() => {
+            if (this.state.playing) {
+                this._playingAnimation()
+            }
+        });
+    }
+
+
     _onPlay = () => {
         console.log("play");
+        this.setState({playing: true});
+        this._playingAnimation()
     }
     _onPause = () => {
         console.log("pause");
+        this.setState({playing: false});
     }
 
     render() {
@@ -167,7 +198,7 @@ export class HomeScreen extends Component {
                 }} source={require('../../../assets/circle.png')}/>
 
                 <View style={styles.playButton}>
-                    <PlayButton onPlay={this._onPlay} onPause={this._onPause} />
+                    <PlayButton onPlay={this._onPlay} onPause={this._onPause}/>
                 </View>
             </View>
         );
