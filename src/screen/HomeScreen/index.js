@@ -26,6 +26,7 @@ export class HomeScreen extends Component {
         heading: null,
         playing: false,
         cats: [],
+        newCats: [],
         soundUrl: null,
         soundObject: null,
     };
@@ -81,16 +82,43 @@ export class HomeScreen extends Component {
         this._getLocationAsync()
         if (this.state.playing && this.state.heading && this.state.location.lat && this.state.location.long) {
             ApiClient('get', `/sound?direction=${this.state.heading}&longitude=${this.state.location.long}&latitude=${this.state.location.lat}`).then(response => {
-                console.log(response.data.cats)
-                this.setState({
-                    soundUrl: response.data.sound_url,
-                    cats: response.data.cats.map(cat => {
+                this.setState({ soundUrl: response.data.sound_url })
+                if (this.state.cats.length === 0) {
+                    this.setState({
+                        cats: response.data.cats.map(cat => {
+                            return {
+                                size: cat.size,
+                                deg: cat.direction,
+                            }
+                        })
+                    })
+                } else {
+                    const newCats = response.data.cats.map(cat => {
                         return {
                             size: cat.size,
                             deg: cat.direction,
                         }
-                    }),
-                })
+                    })
+                    const diffs = this.state.cats.map((cat, i) => {
+                        return newCats[i].deg - cat.deg
+                    })
+                    console.log(diffs)
+                    let count = 0
+                    const _timer = setInterval(() => {
+                        count++
+                        this.setState({
+                            cats: this.state.cats.map((cat, i) => {
+                                return {
+                                    size: cat.size,
+                                    deg: cat.deg + diffs[i] / 100,
+                                }
+                            })
+                        })
+                        if (count >= 100) {
+                            clearInterval(_timer)
+                        }
+                    }, 10)
+                }
             })
         } else {
             this.setState({
