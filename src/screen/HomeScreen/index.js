@@ -22,6 +22,7 @@ export class HomeScreen extends Component {
         textLogoView: new Animated.Value(1),
         circleView: new Animated.Value(0),
         subscribeTimer: null,
+        soundTimer: null,
         location: { lat: null, long: null },
         heading: null,
         playing: false,
@@ -42,9 +43,10 @@ export class HomeScreen extends Component {
             this.props.navigation.navigate('Home')
         }, 1500);
 
-        setInterval(() => {
+        const soundTimer = setInterval(() => {
             this._playSound()
         }, 5000)
+        this.setState(() => { soundTimer })
     }
 
     componentWillUnmount() {
@@ -60,7 +62,8 @@ export class HomeScreen extends Component {
                 soundObject: new Audio.Sound()
             })
         }
-        this.state.soundObject.loadAsync({uri: url}).then(() => {
+        console.log(this.state.soundUrl)
+        this.state.soundObject.loadAsync({uri: this.state.soundUrl}).then(() => {
             this.state.soundObject.playAsync()
         })
     }
@@ -82,7 +85,7 @@ export class HomeScreen extends Component {
         this._getLocationAsync()
         if (this.state.playing && this.state.heading && this.state.location.lat && this.state.location.long) {
             ApiClient('get', `/sound?direction=${this.state.heading}&longitude=${this.state.location.long}&latitude=${this.state.location.lat}`).then(response => {
-                this.setState({ soundUrl: response.data.sound_url })
+                this.setState({ soundUrl: response.data.url })
                 if (this.state.cats.length === 0) {
                     this.setState({
                         cats: response.data.cats.map(cat => {
@@ -102,7 +105,6 @@ export class HomeScreen extends Component {
                     const diffs = this.state.cats.map((cat, i) => {
                         return newCats[i].deg - cat.deg
                     })
-                    console.log(diffs)
                     let count = 0
                     const _timer = setInterval(() => {
                         count++
@@ -129,6 +131,7 @@ export class HomeScreen extends Component {
     }
     _unsubscribe = () => {
         clearInterval(this.state.subscribeTimer)
+        clearInterval(this.state.soundTimer)
     }
 
     _launchAnimation() {
@@ -215,12 +218,10 @@ export class HomeScreen extends Component {
 
 
     _onPlay = () => {
-        console.log("play");
         this.setState({playing: true});
         this._playingAnimation()
     }
     _onPause = () => {
-        console.log("pause");
         this.setState({playing: false});
     }
 
