@@ -3,9 +3,11 @@ import {Animated, View, Easing, Dimensions, Text} from 'react-native'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
 import * as Animatable from 'react-native-animatable';
+import { Audio } from 'expo-av'
 import styles from './style'
 import PlayButton from '../../component/PlayButton'
 import CatView from '../../component/CatView'
+import ApiClient from '../../utils/ApiClient'
 
 export class HomeScreen extends Component {
 
@@ -22,6 +24,9 @@ export class HomeScreen extends Component {
         location: { lat: null, long: null },
         heading: null,
         playing: false,
+        cats: [],
+        soundUrl: null,
+        soundObject: null,
     };
 
     componentDidMount() {
@@ -34,12 +39,29 @@ export class HomeScreen extends Component {
         setTimeout(() => {
             this.props.navigation.navigate('Home')
         }, 1500);
+
+        setInterval(() => {
+            this._playSound()
+        }, 5000)
     }
 
     componentWillUnmount() {
         this._unsubscribe();
     }
 
+    _playSound() {
+        if (!this.state.soundUrl) {
+            return
+        }
+        if (!this.state.soundObject) {
+            this.setState({
+                soundObject: new Audio.Sound()
+            })
+        }
+        this.state.soundObject.loadAsync({uri: url}).then(() => {
+            this.state.soundObject.playAsync()
+        })
+    }
     _getLocationAsync() {
         Permissions.askAsync(Permissions.LOCATION).then(res => {
             if (res.status !== 'granted') {
@@ -56,6 +78,14 @@ export class HomeScreen extends Component {
 
     _subscribe = () => {
         this._getLocationAsync()
+        if (this.state.heading && this.state.location.lat && this.state.location.long) {
+            ApiClient('get', `/sound?direction=${this.state.heading}&longitude=${this.state.location.long}&latitude=${this.state.location.lat}`).then(response => {
+                this.setState({
+                    soundUrl: response.data.sound_url,
+                    cats: response.data.cats,
+                })
+            })
+        }
     }
     _unsubscribe = () => {
         clearInterval(this.state.subscribeTimer)
@@ -193,7 +223,7 @@ export class HomeScreen extends Component {
                     opacity: circleView,
                     ...styles.catView
                 }}>
-                    <CatView cats={cats}/>
+                    <CatView cats={this.state.cats}/>
                 </Animated.View>
 
                 <Animated.Image style={{
