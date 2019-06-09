@@ -21,7 +21,9 @@ export default StyleSheet.create({
         position: 'absolute',
         zIndex: 10,
     },
-    logoContainer: {},
+    logoContainer: {
+        marginTop: 88,
+    },
     logoImage: {
         width: 120,
         height: 56,
@@ -33,7 +35,7 @@ export default StyleSheet.create({
         alignItems: 'center',
         width: 320,
         height: 320,
-        // top: Dimensions.get('window').height / 2 - 160 - 80,
+        top: Dimensions.get('window').height / 2 - 236,
         left: Dimensions.get('window').width / 2 - 320,
         zIndex: 1,
     },
