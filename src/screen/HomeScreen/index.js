@@ -231,12 +231,6 @@ export class HomeScreen extends Component {
                     }} source={require('../../../assets/catpad.png')}/>
                 </View>
 
-                <View style={{marginTop: 100}}>
-                    <Text>緯度: {this.state.location.lat}</Text>
-                    <Text>経度: {this.state.location.long}</Text>
-                    <Text>方角: {this.state.heading}</Text>
-                </View>
-
                 <Animated.View style={{opacity: textLogoView, ...styles.logoContainer}}>
                     <Image source={require('../../../assets/logo.png')} style={{...styles.logoImage}} />
                 </Animated.View>
