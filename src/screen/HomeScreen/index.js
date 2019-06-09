@@ -65,7 +65,9 @@ export class HomeScreen extends Component {
         }
         console.log(this.state.soundUrl)
         this.state.soundObject.loadAsync({uri: this.state.soundUrl}).then(() => {
-            this.state.soundObject.playAsync()
+            this.state.soundObject.playAsync().then(() => {
+                this.state.soundObject.unloadAsync()
+            })
         })
     }
     _getLocationAsync() {
