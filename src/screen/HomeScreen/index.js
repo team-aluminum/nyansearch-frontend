@@ -63,9 +63,8 @@ export class HomeScreen extends Component {
 
     _subscribe = () => {
         this._getLocationAsync()
-        if (this.state.heading && this.state.location.lat && this.state.long) {
-            console.log(123)
-            ApiClient('get', `/sound/${this.state.heading}/${this.state.location.long}/${this.state.location.lat}`).then(response => {
+        if (this.state.heading && this.state.location.lat && this.state.location.long) {
+            ApiClient('get', `/sound?direction=${this.state.heading}&longitude=${this.state.location.long}&latitude=${this.state.location.lat}`).then(response => {
                 console.log(response.data)
             })
         }
