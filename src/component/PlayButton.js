@@ -37,7 +37,7 @@ export default class PlayButton extends Component {
                 return;
             }
 
-            if (this.state.talkIcon < 10) {
+            if (this.state.talkIcon < 15) {
                 this.setState({talkIcon: this.state.talkIcon + 1});
                 this._iconAnimation();
 
@@ -48,7 +48,7 @@ export default class PlayButton extends Component {
             if (this.state.playing) {
                 this._iconAnimation();
             }
-        }, 80);
+        }, 50);
     }
 
     render() {
@@ -57,7 +57,7 @@ export default class PlayButton extends Component {
                 <Image source={require('../../assets/icon-wail-cat.png')} />
                 <View style={styles.button}>
                     <Image source={require('../../assets/icon-talk0.png')} style={{
-                        display: this.state.talkIcon === 0 || this.state.talkIcon > 3 ? 'flex' : 'none',
+                        display: this.state.talkIcon === 0 || this.state.talkIcon > 7 ? 'flex' : 'none',
                         ...styles.icon
                     }} />
                     <Image source={require('../../assets/icon-talk1.png')} style={{
@@ -70,6 +70,22 @@ export default class PlayButton extends Component {
                     }} />
                     <Image source={require('../../assets/icon-talk3.png')} style={{
                         display: this.state.talkIcon === 3 ? 'flex' : 'none',
+                        ...styles.icon
+                    }} />
+                    <Image source={require('../../assets/icon-talk4.png')} style={{
+                        display: this.state.talkIcon === 4 ? 'flex' : 'none',
+                        ...styles.icon
+                    }} />
+                    <Image source={require('../../assets/icon-talk5.png')} style={{
+                        display: this.state.talkIcon === 5 ? 'flex' : 'none',
+                        ...styles.icon
+                    }} />
+                    <Image source={require('../../assets/icon-talk6.png')} style={{
+                        display: this.state.talkIcon === 6 ? 'flex' : 'none',
+                        ...styles.icon
+                    }} />
+                    <Image source={require('../../assets/icon-talk7.png')} style={{
+                        display: this.state.talkIcon === 7 ? 'flex' : 'none',
                         ...styles.icon
                     }} />
                 </View>
