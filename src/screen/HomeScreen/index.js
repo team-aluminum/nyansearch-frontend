@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Animated, View, Easing, Dimensions, Text } from 'react-native'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
+import { Audio } from 'expo'
 import styles from './style'
 import PlayButton from '../../component/PlayButton'
 import CatView from '../../component/CatView'
@@ -31,12 +32,19 @@ export class HomeScreen extends Component {
 
         setTimeout(() => {
             this.props.navigation.navigate('Home')
+            this._prepareSound()
         }, 1500);
     }
     componentWillUnmount() {
         this._unsubscribe();
     }
 
+    _prepareSound() {
+        const soundObject = new Audio.Sound()
+        soundObject.loadAsync({uri: 'http://aluminium-cats.s3-ap-northeast-1.amazonaws.com/cat2_1_f.mp3'}).then(() => {
+            soundObject.playAsync()
+        })
+    }
     _getLocationAsync() {
         Permissions.askAsync(Permissions.LOCATION).then(res => {
             if (res.status !== 'granted') {
