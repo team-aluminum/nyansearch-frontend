@@ -18,6 +18,7 @@ export class HomeScreen extends Component {
     state = {
         circleSize: new Animated.Value(0),
         catpadDeg: new Animated.Value(0),
+        catpadTop: new Animated.Value(0),
         logoView: new Animated.Value(0),
         textLogoView: new Animated.Value(1),
         circleView: new Animated.Value(0),
@@ -163,6 +164,11 @@ export class HomeScreen extends Component {
         this.state.catpadDeg.setValue(0);
 
         Animated.sequence([
+            Animated.timing(this.state.catpadTop, {
+                toValue: 1,
+                duration: 1000,
+                easing: Easing.out(Easing.ease)
+            }),
             Animated.timing(this.state.catpadDeg, {
                 toValue: 1,
                 duration: 100,
@@ -175,7 +181,12 @@ export class HomeScreen extends Component {
             }),
             Animated.timing(this.state.catpadDeg, {
                 toValue: 0,
-                duration: 100,
+                duration: 200,
+                easing: Easing.out(Easing.ease)
+            }),
+            Animated.timing(this.state.catpadDeg, {
+                toValue: 0,
+                duration: 200,
                 easing: Easing.out(Easing.ease)
             }),
         ]).start(() => {
@@ -197,10 +208,14 @@ export class HomeScreen extends Component {
     }
 
     render() {
-        let {circleSize, logoView, catpadDeg, circleView, textLogoView} = this.state;
+        let {circleSize, logoView, catpadDeg, catpadTop, circleView, textLogoView} = this.state;
         let catpadDegValue = catpadDeg.interpolate({
             inputRange: [-1, 0, 1],
             outputRange: ['-15deg', '0deg', '15deg']
+        });
+        let catTopValue = catpadTop.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 45]
         });
         let logoMargin = logoView.interpolate({
             inputRange: [0, 1],
@@ -258,13 +273,13 @@ export class HomeScreen extends Component {
                 <Animated.View style={{
                     opacity: circleView,
                     display: this.state.playing ? 'flex' : 'none',
-                    ...styles.searchingLabel
+                    ...styles.searchingLabelContainer
                 }}>
-                    <Text>大きい肉球は</Text>
-                    <Text>近くにかんばんねこがいます</Text>
+                    <Text style={styles.searchingLabel}>大きい肉球は</Text>
+                    <Text style={styles.searchingLabel}>近くにかんばんねこがいます</Text>
                 </Animated.View>
 
-                <Animatable.View animation='slideInUp' delay={1550} duration={1000} style={styles.playButton}>
+                <Animatable.View animation='slideInUp' delay={1950} duration={1000} style={styles.playButton}>
                     <PlayButton onPlay={this._onPlay} onPause={this._onPause}/>
                 </Animatable.View>
             </View>
