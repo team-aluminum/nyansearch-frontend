@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TouchableOpacity, View, Text, Image, StyleSheet, Dimensions} from 'react-native'
+import {TouchableOpacity, View, Text, Image, StyleSheet, Dimensions, Animated, Easing} from 'react-native'
 
 export default class PlayButton extends Component {
     constructor(props) {
@@ -8,9 +8,11 @@ export default class PlayButton extends Component {
 
     state = {
         playing: false,
+        talkIcon: 0,
     }
     _onPlay = () => {
         this.props.onPlay();
+        this._iconAnimation();
     }
     _onPause = () => {
         this.props.onPause();
@@ -27,16 +29,48 @@ export default class PlayButton extends Component {
         this._onPlay();
     }
 
+    _iconAnimation() {
+        setTimeout( ()=> {
+            if (!this.state.playing) {
+                this.setState({talkIcon: 0});
+
+                return;
+            }
+
+            if (this.state.talkIcon < 10) {
+                this.setState({talkIcon: this.state.talkIcon + 1});
+                this._iconAnimation();
+
+                return;
+            }
+            this.setState({talkIcon: 0});
+
+            if (this.state.playing) {
+                this._iconAnimation();
+            }
+        }, 80);
+    }
+
     render() {
         return (
             <TouchableOpacity onPress={this._onPress}>
                 <Image source={require('../../assets/icon-wail-cat.png')} />
                 <View style={styles.button}>
-                    <Image source={require('../../assets/icon-play.png')} style={{
-                        display: !this.state.playing ? 'flex' : 'none'
+                    <Image source={require('../../assets/icon-talk0.png')} style={{
+                        display: this.state.talkIcon === 0 || this.state.talkIcon > 3 ? 'flex' : 'none',
+                        ...styles.icon
                     }} />
-                    <Image source={require('../../assets/icon-pause.png')} style={{
-                        display: this.state.playing ? 'flex' : 'none'
+                    <Image source={require('../../assets/icon-talk1.png')} style={{
+                        display: this.state.talkIcon === 1 ? 'flex' : 'none',
+                        ...styles.icon
+                    }} />
+                    <Image source={require('../../assets/icon-talk2.png')} style={{
+                        display: this.state.talkIcon === 2 ? 'flex' : 'none',
+                        ...styles.icon
+                    }} />
+                    <Image source={require('../../assets/icon-talk3.png')} style={{
+                        display: this.state.talkIcon === 3 ? 'flex' : 'none',
+                        ...styles.icon
                     }} />
                 </View>
             </TouchableOpacity>
@@ -53,5 +87,9 @@ const styles = StyleSheet.create({
         height: 80,
         backgroundColor: '#A37E76',
         borderRadius: 8,
+    },
+    icon: {
+        width: 32,
+        height: 28,
     }
 });
