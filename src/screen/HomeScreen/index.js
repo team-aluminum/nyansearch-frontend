@@ -22,6 +22,7 @@ export class HomeScreen extends Component {
         logoView: new Animated.Value(0),
         textLogoView: new Animated.Value(1),
         circleView: new Animated.Value(0),
+        hintView:  new Animated.Value(0),
         subscribeTimer: null,
         soundTimer: null,
         location: { lat: null, long: null },
@@ -221,17 +222,30 @@ export class HomeScreen extends Component {
         });
     }
 
+    _hintLabelAnimation() {
+        this.state.hintView.setValue(0);
+
+        Animated.sequence([
+            Animated.timing(this.state.hintView, {
+                toValue: 1,
+                duration: 800,
+                easing: Easing.out(Easing.ease)
+            }),
+
+        ]).start();
+    }
 
     _onPlay = () => {
         this.setState({playing: true});
-        this._playingAnimation()
+        this._playingAnimation();
+        this._hintLabelAnimation();
     }
     _onPause = () => {
         this.setState({playing: false});
     }
 
     render() {
-        let {circleSize, logoView, catpadDeg, catpadTop, circleView, textLogoView} = this.state;
+        let {circleSize, logoView, catpadDeg, catpadTop, circleView, hintView, textLogoView} = this.state;
         let catpadDegValue = catpadDeg.interpolate({
             inputRange: [-1, 0, 1],
             outputRange: ['-15deg', '0deg', '15deg']
@@ -288,7 +302,7 @@ export class HomeScreen extends Component {
                 }} source={require('../../../assets/circle.png')}/>
 
                 <Animated.View style={{
-                    opacity: circleView,
+                    opacity: hintView,
                     display: this.state.playing ? 'flex' : 'none',
                     ...styles.searchingLabelContainer
                 }}>
