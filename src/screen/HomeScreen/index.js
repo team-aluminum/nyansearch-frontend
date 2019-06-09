@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Animated, View, Easing, Dimensions, Text} from 'react-native'
 import * as Location from 'expo-location'
 import * as Permissions from 'expo-permissions'
+import * as Animatable from 'react-native-animatable';
 import styles from './style'
 import PlayButton from '../../component/PlayButton'
 import CatView from '../../component/CatView'
@@ -171,13 +172,13 @@ export class HomeScreen extends Component {
                     ...styles.circleZoom
                 }}/>
 
-                <Animated.View style={{
+                <Animatable.View animation='fadeInUp' delay={200} style={{
                     opacity: circleView,
                     ...styles.headerLabel
                 }}>
                     <Text>猫の声をたどりに </Text>
                     <Text>かんばんねこを探そう！</Text>
-                </Animated.View>
+                </Animatable.View>
 
                 <View style={styles.catpad}>
                     <Animated.Image style={{
@@ -214,9 +215,9 @@ export class HomeScreen extends Component {
                     <Text>近くにかんばんねこがいます</Text>
                 </Animated.View>
 
-                <View style={styles.playButton}>
+                <Animatable.View animation='slideInUp' delay={500} style={styles.playButton}>
                     <PlayButton onPlay={this._onPlay} onPause={this._onPause}/>
-                </View>
+                </Animatable.View>
             </View>
         );
     }
