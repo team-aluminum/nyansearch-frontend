@@ -18,7 +18,7 @@ export default class CatView extends Component {
                             width: catSizies[cats.size - 1],
                             height: catSizies[cats.size - 1],
                             ...styles.item
-                        }} source={require('../../assets/app-icon.png')} />
+                        }} source={require('../../assets/catpad3x.png')} />
                     </View>
                 )}
             </Animated.View>
@@ -28,7 +28,6 @@ export default class CatView extends Component {
 
 const styles = StyleSheet.create({
     container: {
-
     },
     itemWrap: {
         position:  'absolute',
