@@ -40,7 +40,6 @@ export default StyleSheet.create({
     headerLabel: {
         position: 'absolute',
         top: 120,
-        fontSize: 25,
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',

@@ -179,13 +179,13 @@ export class HomeScreen extends Component {
                     ...styles.circleZoom
                 }}/>
 
-                <Animatable.View animation='fadeInUp' delay={200} style={{
-                    opacity: circleView,
-                    ...styles.headerLabel
-                }}>
-                    <Text>猫の声をたどりに </Text>
-                    <Text>かんばんねこを探そう！</Text>
-                </Animatable.View>
+                <Animatable.Image
+                    animation='fadeInUp' delay={1550}  style={{
+                        opacity: circleView,
+                        ...styles.headerLabel
+                    }}
+                    source={require('../../../assets/header-label.png')}
+                />
 
                 <View style={styles.catpad}>
                     <Animated.Image style={{
